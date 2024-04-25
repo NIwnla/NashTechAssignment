@@ -1,0 +1,10 @@
+[{"firstName":"Stirling","lastName":"Sonner","gender":false,"dob":"8/18/1983","phoneNumber":"8365068661","birthplace":"Ha Noi","age":41,"isgraduated":true},
+{"firstName":"Sheff","lastName":"Lehrahan","gender":true,"dob":"4/2/2001","phoneNumber":"2166182212","birthplace":"Da Nang","age":23,"isgraduated":true},
+{"firstName":"Sydney","lastName":"Featherstonehaugh","gender":false,"dob":"3/11/1992","phoneNumber":"6189636512","birthplace":"Ho Chi Minh","age":32,"isgraduated":true},
+{"firstName":"Cathe","lastName":"Bushnell","gender":true,"dob":"7/2/1980","phoneNumber":"8072818027","birthplace":"Hai Phong","age":44,"isgraduated":true},
+{"firstName":"Claudetta","lastName":"Collington","gender":false,"dob":"9/3/1996","phoneNumber":"8742450877","birthplace":"Da Nang","age":28,"isgraduated":true},
+{"firstName":"Zollie","lastName":"Alebrooke","gender":false,"dob":"6/27/1994","phoneNumber":"7517970079","birthplace":"Hai Phong","age":30,"isgraduated":true},
+{"firstName":"Hedda","lastName":"Duell","gender":true,"dob":"12/4/1995","phoneNumber":"4716469529","birthplace":"Hai Phong","age":29,"isgraduated":false},
+{"firstName":"Aurlie","lastName":"Donet","gender":false,"dob":"11/6/2002","phoneNumber":"7119102517","birthplace":"Ha Noi","age":22,"isgraduated":true},
+{"firstName":"Levy","lastName":"Woof","gender":false,"dob":"9/7/2000","phoneNumber":"1986280216","birthplace":"Da Nang","age":24,"isgraduated":false},
+{"firstName":"Sula","lastName":"Zannelli","gender":false,"dob":"3/2/2000","phoneNumber":"7441137221","birthplace":"Da Nang","age":24,"isgraduated":false}]
