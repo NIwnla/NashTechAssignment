@@ -8,11 +8,10 @@ namespace Day1Assignment2
 	{
 		static void Main(string[] args)
 		{
-			var list = new List<Student>();
-			list = list.GetData();
+			var list = new List<Student>().GetData();
 			int maxAge = 0;
 
-			// Find oldest age
+			// Find oldest age by iterate through all records in list
 			foreach (Student student in list)
 			{
 				if (student.Age > maxAge)
@@ -21,7 +20,7 @@ namespace Day1Assignment2
 				}
 			}
 
-			// Add oldest age student to list using by iterate through all records in list, because there only 10 record
+			// Add oldest age student to list using by iterate through all records in list
 			var maxAgeList = new List<Student>();
 			foreach (Student student in list)
 			{

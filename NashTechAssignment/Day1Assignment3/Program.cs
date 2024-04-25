@@ -6,9 +6,8 @@ namespace Day1Assignment3
 	{
 		static void Main(string[] args)
 		{
-			var list = new List<Student>();
-			list = list.GetData();
-			foreach(Student student in list)
+			var list = new List<Student>().GetData();
+			foreach (Student student in list)
 			{
 				Console.WriteLine(student.FirstName + " " + student.LastName);
 			}

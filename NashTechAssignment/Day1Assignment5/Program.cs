@@ -7,8 +7,7 @@ namespace Day1Assignment5
 	{
 		static void Main(string[] args)
 		{
-			var list = new List<Student>();
-			list = list.GetData();
+			var list = new List<Student>().GetData();
 			int index = 0;
 			while (true)
 			{

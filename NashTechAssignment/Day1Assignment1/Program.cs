@@ -7,8 +7,7 @@ namespace Day1Assignment1
 	{
 		static void Main(string[] args)
 		{
-			var list = new List<Student>();
-			list = list.GetData();
+			var list = new List<Student>().GetData();
 			var maleList = new List<Student>();
 			foreach(Student student in list)
 			{
