@@ -21,7 +21,7 @@ namespace Day1Assignment2
 				}
 			}
 
-			// Add oldest age student to list
+			// Add oldest age student to list using by iterate through all records in list, because there only 10 record
 			var maxAgeList = new List<Student>();
 			foreach (Student student in list)
 			{
@@ -32,8 +32,8 @@ namespace Day1Assignment2
 			}
 
 			// If list of oldest age students have more than 1 record
-			// Find earliest DOB and show
-			// Else just show 1st record of list
+			// Find earliest DOB by iterate through all records in list and show
+			// Else just show 1st record in the list
 			if (maxAgeList.Count >= 1)
 			{
 				var minDate = DateTime.MaxValue;
