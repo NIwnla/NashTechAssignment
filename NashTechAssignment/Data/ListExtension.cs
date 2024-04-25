@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data
 {
-	public static class GenerateDataExtension
+	public static class ListExtension
 	{
 		public static List<Student> GetData(this List<Student> list)
 		{
@@ -22,6 +23,13 @@ namespace Data
 				}
 			}
 			return list;
+		}
+		public static void WriteConsole<T>(this List<T> list)
+		{
+			foreach (var item in list)
+			{
+				Console.WriteLine(JsonConvert.SerializeObject(item));
+			}
 		}
 	}
 }

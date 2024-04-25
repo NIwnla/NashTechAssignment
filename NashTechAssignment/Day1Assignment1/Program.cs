@@ -14,10 +14,7 @@ namespace Day1Assignment1
 			{
 				if (student.Gender == true) maleList.Add(student);
 			}
-			foreach (Student student in maleList)
-			{
-				Console.WriteLine(JsonConvert.SerializeObject(student));
-			}
+			maleList.WriteConsole<Student>();
 			Console.ReadLine();
 		}
 	}

@@ -7,8 +7,7 @@ namespace Day1Assignment4
 	{
 		static void Main(string[] args)
 		{
-			var list = new List<Student>();
-			list = list.GetData();
+			var list = new List<Student>().GetData();
 			var equal2000 = new List<Student>();
 			var more2000 = new List<Student>();
 			var less2000 = new List<Student>();
@@ -28,22 +27,13 @@ namespace Day1Assignment4
 				}
 			}
 			Console.WriteLine("Student with birth year equal to 2000: ");
-			foreach (Student student in equal2000)
-			{
-				Console.WriteLine(JsonConvert.SerializeObject(student));
-			}
+			equal2000.WriteConsole<Student>();
 			Console.WriteLine();
 			Console.WriteLine("Student with birth year greater than 2000: ");
-			foreach (Student student in more2000)
-			{
-				Console.WriteLine(JsonConvert.SerializeObject(student));
-			}
+			more2000.WriteConsole<Student>();
 			Console.WriteLine();
 			Console.WriteLine("Student with birth year less than 2000: ");
-			foreach (Student student in less2000)
-			{
-				Console.WriteLine(JsonConvert.SerializeObject(student));
-			}
+			less2000.WriteConsole<Student>();
 			Console.ReadLine();
 		}
 	}
