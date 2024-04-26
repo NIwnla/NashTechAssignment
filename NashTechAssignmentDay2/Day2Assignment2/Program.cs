@@ -55,6 +55,7 @@ namespace Day2Assignment2
 			await Task.WhenAll(taskList);
 		}
 
+		//Check for int
 		static int? checkInt(string? value)
 		{
 			try
@@ -86,7 +87,7 @@ namespace Day2Assignment2
 			}
 			while (range == null)
 			{
-				Console.Write("Range to split (0 if you dont want to split):");
+				Console.Write("Range to split for tasks (0 if you dont want to split):");
 				range = checkInt(Console.ReadLine());
 			}
 
