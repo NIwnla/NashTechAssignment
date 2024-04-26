@@ -89,6 +89,7 @@ namespace Day2Assignment2
 			{
 				Console.Write("Range to split for tasks (0 if you dont want to split):");
 				range = checkInt(Console.ReadLine());
+				if (range > end) range = end; 
 			}
 
 			// Add a stopwatch to check time to complete
