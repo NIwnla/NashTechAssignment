@@ -7,5 +7,8 @@ namespace NashTechAssignmentDay4.Interfaces
 	{
 		List<Person> GetAll();
 		List<Person> FindByCondition(Func<Person, bool> condition);
+		void Create(Person person);
+		void Update(Person person);
+		void Delete(Person person);
 	}
 }

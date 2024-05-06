@@ -12,6 +12,17 @@ namespace NashTechAssignmentDay4.Repositories
 		{
 			People = new List<Person>().GetDataFromFile();
 		}
+
+		public void Create(Person person)
+		{
+			People.Add(person);
+		}
+
+		public void Delete(Person person)
+		{
+			People.Remove(person);
+		}
+
 		public List<Person> FindByCondition(Func<Person, bool> condition)
 		{
 			return People.Where(condition).ToList();
@@ -20,6 +31,11 @@ namespace NashTechAssignmentDay4.Repositories
 		public List<Person> GetAll()
 		{
 			return People;
+		}
+
+		public void Update(Person person)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

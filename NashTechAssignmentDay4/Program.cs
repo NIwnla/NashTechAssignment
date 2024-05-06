@@ -1,5 +1,6 @@
 using NashTechAssignmentDay4.Interfaces;
 using NashTechAssignmentDay4.Repositories;
+using NashTechAssignmentDay4.Services;
 
 namespace NashTechAssignmentDay4
 {
@@ -12,6 +13,7 @@ namespace NashTechAssignmentDay4
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+			builder.Services.AddScoped<RookiesService>();
 
 			var app = builder.Build();
 

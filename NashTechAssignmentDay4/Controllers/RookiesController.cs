@@ -4,22 +4,23 @@ using Microsoft.Extensions.FileProviders;
 using NashTechAssignmentDay4.Extensions;
 using NashTechAssignmentDay4.Interfaces;
 using NashTechAssignmentDay4.Models;
+using NashTechAssignmentDay4.Services;
 
 namespace NashTechAssignmentDay4.Controllers
 {
-    [Route("NashTech")]
+    [Route("NashTech/Rookies")]
     public class RookiesController : Controller
     {
-        private readonly IPersonRepository _personRepository;
-        public RookiesController(IPersonRepository personRepository)
+        private readonly RookiesService _service;
+        public RookiesController(RookiesService service)
         {
-            _personRepository = personRepository;
+			_service = service;
         }
 
         [Route("GetMales")]
         public IActionResult GetMales()
         {
-            var males = _personRepository.FindByCondition(p => p.Gender == GenderType.Male);
+            var males = _service.GetMales();
             if (males.Count <= 0)
             {
                 return NotFound("No male found");
@@ -30,7 +31,7 @@ namespace NashTechAssignmentDay4.Controllers
         [Route("GetOldest")]
         public IActionResult GetOldest()
         {
-            var oldestPerson = _personRepository.GetAll().OrderBy(p => p.DateOfBirth).FirstOrDefault();
+            var oldestPerson = _service.GetOldest();
             if (oldestPerson == null)
             {
                 return NotFound("There is no people in the list");
@@ -41,30 +42,18 @@ namespace NashTechAssignmentDay4.Controllers
         [Route("GetFullNames")]
         public IActionResult GetFullNames()
         {
-            var fullnames = _personRepository.GetAll().Select(p => new { FirstName = p.FirstName, LastName = p.LastName }).ToList();
-            if (fullnames.Count <= 0)
-            {
-                return NotFound("No male found");
-            }
+            var fullnames = _service.GetFullnames();
             return Ok(fullnames);
         }
 
         [Route("GetByBirthYear")]
-        public IActionResult GetByBirthYear([FromQuery] int input = 0)
+        public IActionResult GetByBirthYear([FromQuery] int? input)
         {
-            var result = new List<Person>();
-            switch (input)
+            if(input == null)
             {
-                case 0:
-                    result = _personRepository.FindByCondition(p => p.DateOfBirth.Year == 2000);
-                    break;
-                case 1:
-                    result = _personRepository.FindByCondition(p => p.DateOfBirth.Year > 2000);
-                    break;
-                case 2:
-                    result = _personRepository.FindByCondition(p => p.DateOfBirth.Year < 2000);
-                    break;
+                return BadRequest("Please input your choice");
             }
+            var result = _service.GetByBirthYear(input.Value);
             if (result.Count < 0)
             {
                 return NotFound("There is no record match your query");
@@ -77,12 +66,16 @@ namespace NashTechAssignmentDay4.Controllers
         {
             try
             {
-                var people = _personRepository.GetAll();
+                var people = _service.GetPeople();
 
                 var workbook = new XLWorkbook();
-                workbook.AddWorksheet("People");
-                var worksheet = workbook.Worksheet("People");
+                var worksheet = workbook.AddWorksheet("People");
 
+                //Let cell in excel file ajust its size to match the contents
+				worksheet.Columns().AdjustToContents();
+                worksheet.Rows().AdjustToContents();
+
+                //Add header
 				worksheet.Cell("A1").Value = "First Name";
                 worksheet.Cell("B1").Value = "Last Name";
                 worksheet.Cell("C1").Value = "Gender";
@@ -90,6 +83,8 @@ namespace NashTechAssignmentDay4.Controllers
                 worksheet.Cell("E1").Value = "Phone Number";
                 worksheet.Cell("F1").Value = "Birth Place";
                 worksheet.Cell("G1").Value = "Is Graduated";
+
+                //Add records
                 int row = 2;
                 foreach (var person in people)
                 {
@@ -106,7 +101,7 @@ namespace NashTechAssignmentDay4.Controllers
                 workbook.SaveAs("People.xlsx");
                 return Ok("Successfully export to excel");
             }
-            catch (Exception ex)
+            catch
             {
                 return Problem("Problem with saving data to excel file");
             }
