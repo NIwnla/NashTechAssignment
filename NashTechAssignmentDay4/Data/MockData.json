@@ -1,0 +1,92 @@
+[
+  {
+    "FirstName": "John",
+    "LastName": "Doe",
+    "Gender": "Male",
+    "DateOfBirth": "2005-05-15",
+    "PhoneNumber": "123-456-7890",
+    "BirthPlace": "New York",
+    "IsGraduated": true
+  },
+  {
+    "FirstName": "Jane",
+    "LastName": "Doe",
+    "Gender": "Female",
+    "DateOfBirth": "2001-10-20",
+    "PhoneNumber": "987-654-3210",
+    "BirthPlace": "Los Angeles",
+    "IsGraduated": false
+  },
+  {
+    "FirstName": "Alex",
+    "LastName": "Smith",
+    "Gender": "Other",
+    "DateOfBirth": "1985-03-08",
+    "PhoneNumber": "555-123-4567",
+    "BirthPlace": "Chicago",
+    "IsGraduated": true
+  },
+  {
+    "FirstName": "Emily",
+    "LastName": "Johnson",
+    "Gender": "Female",
+    "DateOfBirth": "2000-07-12",
+    "PhoneNumber": "444-555-6666",
+    "BirthPlace": "Houston",
+    "IsGraduated": true
+  },
+  {
+    "FirstName": "Michael",
+    "LastName": "Brown",
+    "Gender": "Male",
+    "DateOfBirth": "1992-09-25",
+    "PhoneNumber": "777-888-9999",
+    "BirthPlace": "Miami",
+    "IsGraduated": false
+  },
+  {
+    "FirstName": "Sophia",
+    "LastName": "Martinez",
+    "Gender": "Female",
+    "DateOfBirth": "2000-02-28",
+    "PhoneNumber": "111-222-3333",
+    "BirthPlace": "Phoenix",
+    "IsGraduated": true
+  },
+  {
+    "FirstName": "William",
+    "LastName": "Anderson",
+    "Gender": "Male",
+    "DateOfBirth": "1983-11-05",
+    "PhoneNumber": "666-777-8888",
+    "BirthPlace": "Dallas",
+    "IsGraduated": false
+  },
+  {
+    "FirstName": "Isabella",
+    "LastName": "Taylor",
+    "Gender": "Female",
+    "DateOfBirth": "2002-04-17",
+    "PhoneNumber": "999-888-7777",
+    "BirthPlace": "San Francisco",
+    "IsGraduated": true
+  },
+  {
+    "FirstName": "James",
+    "LastName": "Wilson",
+    "Gender": "Male",
+    "DateOfBirth": "2000-08-30",
+    "PhoneNumber": "333-444-5555",
+    "BirthPlace": "Seattle",
+    "IsGraduated": false
+  },
+  {
+    "FirstName": "Olivia",
+    "LastName": "Moore",
+    "Gender": "Female",
+    "DateOfBirth": "1996-01-10",
+    "PhoneNumber": "222-333-4444",
+    "BirthPlace": "Boston",
+    "IsGraduated": true
+  }
+]
