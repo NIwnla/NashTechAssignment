@@ -63,6 +63,12 @@
 
 <div>
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) | 
-	<a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> | 
+	<button class="btn-danger"><a id="deleteLink" class="text-white " asp-action="Delete" asp-route-id="@Model.Id">Delete</a></button> |
 	<a asp-action="Index">Back to List</a>
 </div>
+
+<style>
+	#deleteLink {
+		text-decoration: none;
+	}
+</style>
