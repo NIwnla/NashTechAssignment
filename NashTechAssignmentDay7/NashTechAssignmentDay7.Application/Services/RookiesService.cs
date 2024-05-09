@@ -29,7 +29,7 @@ namespace NashTechAssignmentDay7.Application.Services
 		{
 			return _personRepository.FindByCondition(p => (p.FirstName + " " + p.LastName).Contains(filter)
 														|| string.Equals(p.Gender.ToString(), filter, StringComparison.OrdinalIgnoreCase)
-														|| string.Equals(p.BirthPlace , filter, StringComparison.OrdinalIgnoreCase));
+														|| p.BirthPlace.ToLower().Contains(filter.ToLower()));
 		}
 
 		public bool Remove(Person person)

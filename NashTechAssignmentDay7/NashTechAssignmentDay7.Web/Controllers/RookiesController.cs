@@ -35,7 +35,7 @@ namespace NashTechAssignmentDay7.Web.Controllers
 			var people = _rookiesService.GetPeopleByFilter(filter);
 			if (people == null || people.Count() <= 0)
 			{
-				return NotFound("No rookie found");
+				return NotFound("No rookie satisfied your filter");
 			}
 			return Ok(people);
 		}
