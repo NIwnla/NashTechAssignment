@@ -27,24 +27,12 @@ namespace NashTechAssignmentDay7.Application.Services
 
 		public IEnumerable<Person> GetPeopleByFilter(string? firstName, string? lastName, string? gender, string? birthPlace)
 		{
-			var result = _personRepository.GetPeople();
-			if (firstName != null)
-			{
-				result = result.Where(x => x.FirstName.Contains(firstName));
-			}
-			if (lastName != null)
-			{
-				result = result.Where(x => x.LastName.Contains(lastName));
-			}
-			if (gender != null)
-			{
-				result = result.Where(x => x.Gender.ToString().ToLower() == gender.ToLower());
-			}
-			if (birthPlace != null)
-			{
-				result = result.Where(x => x.BirthPlace.ToLower().Contains(birthPlace.ToLower()));
-			}
-			return result;
+			return _personRepository.GetPeople().Where(x => 
+										(string.IsNullOrEmpty(firstName) || (!string.IsNullOrEmpty(firstName) && x.FirstName.Contains(firstName)))
+									&& (string.IsNullOrEmpty(lastName) || (!string.IsNullOrEmpty(lastName) && x.LastName.Contains(lastName)))
+									&& (string.IsNullOrEmpty(gender) || (!string.IsNullOrEmpty(gender) && x.Gender.ToString().ToLower() == gender.ToLower()))
+									&& (string.IsNullOrEmpty(birthPlace) || (!string.IsNullOrEmpty(birthPlace) && x.BirthPlace.ToLower().Contains(birthPlace.ToLower()))));
+
 		}
 
 		public bool Remove(Person person)
