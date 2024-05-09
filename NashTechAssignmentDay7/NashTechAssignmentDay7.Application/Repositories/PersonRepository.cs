@@ -39,7 +39,7 @@ namespace NashTechAssignmentDay7.Application.Repositories
 			return People.Where(condition);
 		}
 
-		public IEnumerable<Person> GetWorkTasks()
+		public IEnumerable<Person> GetPeople()
 		{
 			return People;
 		}

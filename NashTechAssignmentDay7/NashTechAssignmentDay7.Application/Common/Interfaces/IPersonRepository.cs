@@ -9,7 +9,7 @@ namespace NashTechAssignmentDay7.Application.Common.Interfaces
 {
 	public interface IPersonRepository
 	{
-		IEnumerable<Person> GetWorkTasks();
+		IEnumerable<Person> GetPeople();
 		IEnumerable<Person> FindByCondition(Func<Person,bool> condition);
 		bool Create(Person person);
 		bool CreateRange(IEnumerable<Person> people);

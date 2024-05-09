@@ -10,7 +10,7 @@ namespace NashTechAssignmentDay7.Application.Common.Interfaces
 	public interface IRookiesService
 	{
 		IEnumerable<Person> GetAllPeople();
-		IEnumerable<Person> GetPeopleByFilter(string filter);
+		IEnumerable<Person> GetPeopleByFilter(string? firstName, string? lastName, string? gender, string? birthPlace);
 		bool Remove(Person person);
 		bool Update(Person person);
 		bool Create(Person person);

@@ -14,30 +14,20 @@ namespace NashTechAssignmentDay7.Web.Controllers
 		{
 			_rookiesService = rookiesService;
 		}
-		[HttpGet]
-		public IActionResult GetAll()
-		{
-			var people = _rookiesService.GetAllPeople();
-			if (people == null)
-			{
-				return NotFound("No rookie found");
-			}
-			return Ok(people);
-		}
 
-		[HttpGet("{filter}")]
-		public IActionResult GetByFilter(string filter)
+		[HttpGet]
+		public IActionResult GetRookies([FromQuery] string? firstName, string? lastName, string? gender, string? birthPlace)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
-			var people = _rookiesService.GetPeopleByFilter(filter);
-			if (people == null || people.Count() <= 0)
+			var rookies = _rookiesService.GetPeopleByFilter(firstName, lastName, gender, birthPlace);
+			if (rookies == null || rookies.Count() <= 0)
 			{
 				return NotFound("No rookie satisfied your filter");
 			}
-			return Ok(people);
+			return Ok(rookies);
 		}
 
 		[HttpDelete]

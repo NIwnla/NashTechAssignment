@@ -22,14 +22,29 @@ namespace NashTechAssignmentDay7.Application.Services
 
 		public IEnumerable<Person> GetAllPeople()
 		{
-			return _personRepository.GetWorkTasks();
+			return _personRepository.GetPeople();
 		}
 
-		public IEnumerable<Person> GetPeopleByFilter(string filter)
+		public IEnumerable<Person> GetPeopleByFilter(string? firstName, string? lastName, string? gender, string? birthPlace)
 		{
-			return _personRepository.FindByCondition(p => (p.FirstName + " " + p.LastName).Contains(filter)
-														|| string.Equals(p.Gender.ToString(), filter, StringComparison.OrdinalIgnoreCase)
-														|| p.BirthPlace.ToLower().Contains(filter.ToLower()));
+			var result = _personRepository.GetPeople();
+			if (firstName != null)
+			{
+				result = result.Where(x => x.FirstName.Contains(firstName));
+			}
+			if (lastName != null)
+			{
+				result = result.Where(x => x.LastName.Contains(lastName));
+			}
+			if (gender != null)
+			{
+				result = result.Where(x => x.Gender.ToString().ToLower() == gender.ToLower());
+			}
+			if (birthPlace != null)
+			{
+				result = result.Where(x => x.BirthPlace.ToLower().Contains(birthPlace.ToLower()));
+			}
+			return result;
 		}
 
 		public bool Remove(Person person)
