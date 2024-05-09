@@ -14,7 +14,7 @@ namespace NashTechAssignmentDay6.Web.Controllers
 		{
 			_workTaskService = workTaskService;
 		}
-		[HttpGet("GetAll")]
+		[HttpGet]
 		public IActionResult GetAll()
 		{
 			var workTasks = _workTaskService.GetAllWorkTasks();
@@ -25,7 +25,7 @@ namespace NashTechAssignmentDay6.Web.Controllers
 			return Ok(workTasks);
 		}
 
-		[HttpGet("GetById")]
+		[HttpGet("{id}")]
 		public IActionResult GetById(int id) 
 		{
 			if (!ModelState.IsValid)
@@ -40,7 +40,7 @@ namespace NashTechAssignmentDay6.Web.Controllers
 			return Ok(workTask);
 		}
 
-		[HttpDelete("Delete")]
+		[HttpDelete]
 		public IActionResult Delete([FromBody]WorkTask workTask) 
 		{
 			if (!ModelState.IsValid)
@@ -71,7 +71,7 @@ namespace NashTechAssignmentDay6.Web.Controllers
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
 
-		[HttpPut("Edit")]
+		[HttpPut]
 		public IActionResult Edit([FromBody] WorkTask workTask)
 		{
 			if (!ModelState.IsValid)
@@ -86,7 +86,7 @@ namespace NashTechAssignmentDay6.Web.Controllers
 			return StatusCode(StatusCodes.Status500InternalServerError);
 		}
 
-		[HttpPost("Create")]
+		[HttpPost]
 		public IActionResult Create([FromBody]WorkTask workTask)
 		{
 			if (!ModelState.IsValid)

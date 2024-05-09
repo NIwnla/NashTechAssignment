@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NashTechAssignmentDay7.Domain\NashTechAssignmentDay7.Domain.csproj" />
+    <ProjectReference Include="..\NashTechAssignmentDay7.Infrastructure\NashTechAssignmentDay7.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
