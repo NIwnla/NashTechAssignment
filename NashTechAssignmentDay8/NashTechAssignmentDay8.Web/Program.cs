@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
-using NashTechAssignmentDay8.Infrastucture.Data;
+using NashTechAssignmentDay8.Infrastructure.Data;
+using NashTechAssignmentDay8.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<MyDbContext>(options =>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext"), b => b.MigrationsAssembly("NashTechAssignmentDay8.Web"));
 });
@@ -31,6 +33,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.SeedData();
 
 app.Run();
 

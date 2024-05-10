@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NashTechAssignmentDay8.Infrastucture.Data;
+using NashTechAssignmentDay8.Infrastructure.Data;
 
 #nullable disable
 
@@ -83,13 +83,13 @@ namespace NashTechAssignmentDay8.Web.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Enable")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("EmployeeId");
+                    b.Property<bool>("Enable")
+                        .HasColumnType("bit");
+
+                    b.HasKey("EmployeeId", "ProjectId");
 
                     b.HasIndex("ProjectId");
 
@@ -102,8 +102,8 @@ namespace NashTechAssignmentDay8.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
@@ -114,21 +114,6 @@ namespace NashTechAssignmentDay8.Web.Migrations
                         .IsUnique();
 
                     b.ToTable("Salaries");
-                });
-
-            modelBuilder.Entity("ProjectEmployee", b =>
-                {
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("EmployeeId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectEmployee");
                 });
 
             modelBuilder.Entity("NashTechAssignmentDay8.Domain.Entities.Employee", b =>
@@ -170,21 +155,6 @@ namespace NashTechAssignmentDay8.Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("ProjectEmployee", b =>
-                {
-                    b.HasOne("NashTechAssignmentDay8.Domain.Entities.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NashTechAssignmentDay8.Domain.Entities.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("NashTechAssignmentDay8.Domain.Entities.Department", b =>

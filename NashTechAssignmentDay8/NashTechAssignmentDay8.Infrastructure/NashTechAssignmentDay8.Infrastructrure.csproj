@@ -14,5 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NashTechAssignmentDay8.Domain\NashTechAssignmentDay8.Domain.csproj" />
+    <ProjectReference Include="..\NashTechAssignmentDay8.Application\NashTechAssignmentDay8.Application.csproj" />
   </ItemGroup>
 </Project>

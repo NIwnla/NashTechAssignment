@@ -56,30 +56,6 @@ namespace NashTechAssignmentDay8.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectEmployee",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectEmployee", x => new { x.EmployeeId, x.ProjectId });
-                    table.ForeignKey(
-                        name: "FK_ProjectEmployee_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProjectEmployee_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProjectEmployees",
                 columns: table => new
                 {
@@ -89,6 +65,7 @@ namespace NashTechAssignmentDay8.Web.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ProjectEmployees", x => new { x.EmployeeId, x.ProjectId });
                     table.ForeignKey(
                         name: "FK_ProjectEmployees_Employees_EmployeeId",
                         column: x => x.EmployeeId,
@@ -109,7 +86,7 @@ namespace NashTechAssignmentDay8.Web.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Amount = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,16 +105,6 @@ namespace NashTechAssignmentDay8.Web.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectEmployee_ProjectId",
-                table: "ProjectEmployee",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectEmployees_EmployeeId",
-                table: "ProjectEmployees",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProjectEmployees_ProjectId",
                 table: "ProjectEmployees",
                 column: "ProjectId");
@@ -152,9 +119,6 @@ namespace NashTechAssignmentDay8.Web.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ProjectEmployee");
-
             migrationBuilder.DropTable(
                 name: "ProjectEmployees");
 

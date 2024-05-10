@@ -13,7 +13,7 @@ public class Salary
     public Guid EmployeeId { get; set; }
 
     [Required]
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
 
     public virtual Employee? Employee { get; set; }
 }
