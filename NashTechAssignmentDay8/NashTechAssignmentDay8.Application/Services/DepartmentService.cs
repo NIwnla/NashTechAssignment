@@ -14,28 +14,27 @@ public class DepartmentService : IDepartmentService
         _departmentRepository = genericRepository;
         _mapper = mapper;
     }
-    public bool Create(Department department) => _departmentRepository.Create(department);
+    public Task<bool> CreateAsync(Department department) => _departmentRepository.CreateAsync(department);
 
-    public bool Delete(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
         var department = _departmentRepository.FindByCondition(d => d.Id == id).FirstOrDefault();
-        return _departmentRepository.Delete(department);
+        return await _departmentRepository.DeleteAsync(department);
     }
 
-    public IEnumerable<DepartmentDto> GetDepartmentsByConditon(Func<Department, bool> condition)
+    public  IEnumerable<DepartmentDto> GetDepartmentsByConditon(Func<Department, bool> condition)
     {
         var departments = _departmentRepository.FindByCondition(condition);
         var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(departments);
         return departmentDtos;
     }
 
-    public IEnumerable<DepartmentDto> GetDepartments()
+    public async Task<IEnumerable<DepartmentDto>> GetDepartmentsAsync()
     {
-        var departments = _departmentRepository.FindAll();
+        var departments =  await _departmentRepository.FindAllAsync();
         var departmentDtos = _mapper.Map<IEnumerable<DepartmentDto>>(departments);
         return departmentDtos;
     }
 
-    public bool Update(Department department) => _departmentRepository.Update(department);
-
+    public async Task<bool> UpdateAsync(Department department) => await _departmentRepository.UpdateAsync(department);
 }

@@ -5,9 +5,9 @@ namespace NashTechAssignmentDay8.Application.Common.Interfaces;
 
 public interface IDepartmentService
 {
-    IEnumerable<DepartmentDto> GetDepartments();
+    Task<IEnumerable<DepartmentDto>> GetDepartmentsAsync();
     IEnumerable<DepartmentDto> GetDepartmentsByConditon(Func<Department,bool> condition);
-    bool Create (Department department);
-    bool Update (Department department);
-    bool Delete (Guid id);
+    Task<bool> CreateAsync(Department department);
+    Task<bool> UpdateAsync(Department department);
+    Task<bool> DeleteAsync(Guid id);
 }

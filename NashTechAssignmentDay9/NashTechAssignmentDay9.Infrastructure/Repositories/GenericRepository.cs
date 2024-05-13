@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using NashTechAssignmentDay8.Application.Common.Interfaces;
-using NashTechAssignmentDay8.Infrastructure.Data;
-namespace NashTechAssignmentDay8.Infrastructure.Repositories;
+using NashTechAssignmentDay9.Application.Common.Interfaces;
+using NashTechAssignmentDay9.Infrastructure.Data;
+namespace NashTechAssignmentDay9.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
@@ -23,15 +23,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await SaveAsync();
     }
 
-    public async Task<IEnumerable<T>> FindAllAsync()
+    public IQueryable<T> FindAll()
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        return _dbContext.Set<T>();
     }
 
-    public IEnumerable<T> FindByCondition(Func<T, bool> condition)
+    public IQueryable<T> FindByCondition(Func<T, bool> condition)
     {
-        return _dbContext.Set<T>().Where(condition);
+        return _dbContext.Set<T>().Where(condition).AsQueryable();
     }
+
     public async Task<bool> SaveAsync() => await _dbContext.SaveChangesAsync() > 0;
     public async Task<bool> UpdateAsync(T entity)
     {
