@@ -17,6 +17,13 @@ public static class ApplicationDbExtension
             dbContext.Database.EnsureCreated();
             if (!dbContext.Departments.Any())
             {
+                // Use this if program failed to read file
+                // var departments = new List<Department>{
+                //     new Department{Name = "Software Development"},
+                //     new Department{Name = "Finance"},
+                //     new Department{Name = "Accountant"},
+                //     new Department{Name = "HR"}
+                // };
                 var departments = new List<Department>();
                 var relativePath = Directory.GetParent(Environment.CurrentDirectory).FullName;
                 string fullPath = relativePath + DATA_FILE_PATH;
