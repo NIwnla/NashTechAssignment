@@ -1,0 +1,99 @@
+﻿@model NashTechAssignmentDay5.Application.Helper.PaginatedList<NashTechAssignmentDay5.Domain.Entities.Person>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Index">
+	Change page size:
+	<input type="number" name="pageSize" min="1" />
+	<input type="submit" value="Change" />
+</form>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Id
+			</th>
+			<th>
+				FirstName
+			</th>
+			<th>
+				LastName
+			</th>
+			<th>
+				Gender
+			</th>
+			<th>
+				DateOfBirth
+			</th>
+			<th>
+				PhoneNumber
+			</th>
+			<th>
+				BirthPlace
+			</th>
+			<th>
+				IsGraduated
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Id)
+				</td>
+				<td>
+					<a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.FirstName)</a>
+				</td>
+				<td>
+					<a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.LastName)</a>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Gender)
+				</td>
+				<td>
+					@item.DateOfBirth.ToShortDateString()
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PhoneNumber)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BirthPlace)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsGraduated)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.Id })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@{
+	var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+	var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-pageSize="@(Model.PageSize)"
+   class="btn btn-default @prevDisabled">
+	Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-pageSize="@(Model.PageSize)"
+   class="btn btn-default @nextDisabled">
+	Next
+</a>

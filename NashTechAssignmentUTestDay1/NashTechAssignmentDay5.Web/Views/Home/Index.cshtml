@@ -1,0 +1,31 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+	<p>
+		<a asp-area="NashTech" asp-controller="Rookies" asp-action="GetMales">Return males</a>
+	</p>
+	<p>
+		<a asp-area="NashTech" asp-controller="Rookies" asp-action="GetOldest">Get oldest person</a>
+	</p>
+	<p>
+		<a asp-area="NashTech" asp-controller="Rookies" asp-action="GetFullNames">Get fullname of all people</a>
+	</p>
+	<p>
+		<form asp-area="NashTech" asp-controller="Rookies" asp-action="GetByBirthYear" method="get">
+			Find by birthyear
+			<input type="radio" id="equal" name="input" value="0" /> <label for="equal"> equal</label>
+			<input type="radio" id="greater" name="input" value="1" /> <label for="greater"> greater</label>
+			<input type="radio" id="lesser" name="input" value="2" /> <label for="lesser"> lesser</label>
+			than 2000
+			<input type="submit" value="Find" />
+		</form>
+	</p>
+	<p>
+		<form asp-area="NashTech" asp-controller="Rookies" asp-action="ExportToExcel">
+			<input type="text" id="path" name="path" placeholder="Type folder directory">
+			<input type="submit" value="Export">
+		</form>
+	</p>
+</div>
