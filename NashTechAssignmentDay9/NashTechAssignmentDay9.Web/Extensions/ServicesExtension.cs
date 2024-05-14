@@ -14,6 +14,7 @@ public static class ServicesExtension
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IGenericRepository<Project>, GenericRepository<Project>>();
         services.AddScoped<IGenericRepository<Salary>, GenericRepository<Salary>>();
+        services.AddScoped<IGenericRepository<ProjectEmployee>, GenericRepository<ProjectEmployee>>();
         return services;
     }
 
@@ -23,6 +24,7 @@ public static class ServicesExtension
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<ISalaryService, SalaryService>();
+        services.AddScoped<IProjectEmployeeService, ProjectEmployeeService>();
         return services;
     }
 }
