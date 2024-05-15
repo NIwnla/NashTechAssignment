@@ -54,13 +54,14 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			//Arrange
 			Person person = null;
 			int id = 1;
+			var expectedMessage = $"No person with id: {id} found";
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person);
 
 			//Act
-			var result = _controller.Details(id) as ActionResult;
+			var result = _controller.Details(id);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<NotFoundObjectResult>().Which.Value.Should().Be(expectedMessage);
 		}
 
 		[Test]
@@ -72,11 +73,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
 
 			//Act
-			var result = _controller.Details(id) as ViewResult;
+			var result = _controller.Details(id);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(person.Object);
 		}
 
 		[Test]
@@ -85,10 +85,9 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			//Arrange
 
 			//Act
-			var result = _controller.Create() as ViewResult;
+			var result = _controller.Create();
 
 			//Assert
-			result.Should().NotBeNull();
 			result.Should().BeOfType<ViewResult>();
 		}
 
@@ -100,11 +99,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.AddPerson(person.Object)).Returns(false);
 
 			//Act
-			var result = _controller.Create(person.Object) as ViewResult;
+			var result = _controller.Create(person.Object);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(person.Object);
 		}
 
 		[Test]
@@ -113,15 +111,15 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			////Arrange
 			var person = new Mock<Person>();
 			_mockService.Setup(ser => ser.AddPerson(person.Object)).Returns(true);
-			var expectedRedirectValues = new RouteValueDictionary
-			{
-				{ "action", "Index" }
-			};
+			var expectedAction = "Index";
 			//Act
-			var result = _controller.Create(person.Object) as ActionResult;
+			var result = _controller.Create(person.Object);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<RedirectToActionResult>();
+			var redirectToActionResult = result as RedirectToActionResult;
+			redirectToActionResult.Should().NotBeNull();
+			redirectToActionResult!.ActionName.Should().Be(expectedAction);
 		}
 
 		[Test]
@@ -132,12 +130,15 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			int id = person.Object.Id;
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
 			_mockService.Setup(ser => ser.DeletePerson(id)).Returns(false);
+			var expectedMessage = "Problem with deleting person";
 
 			//Act
-			var result = _controller.Delete(id) as ActionResult;
+			var result = _controller.Delete(id);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<ObjectResult>()
+				.Which.Value.Should().BeOfType<ProblemDetails>()
+				.Which.Detail.Should().Be(expectedMessage);
 		}
 
 		[Test]
@@ -146,14 +147,27 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			//Arrange
 			var person = new Mock<Person>();
 			int id = person.Object.Id;
+			var expectedAction = "ConfirmDelete";
+			var expectedRouteValue = person.Object;
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
 			_mockService.Setup(ser => ser.DeletePerson(id)).Returns(true);
 
 			//Act
-			var result = _controller.Delete(id) as ActionResult;
+			var result = _controller.Delete(id);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<RedirectToActionResult>();
+			var redirectToActionResult = result as RedirectToActionResult;
+			redirectToActionResult.Should().NotBeNull();
+			redirectToActionResult!.ActionName.Should().Be(expectedAction);
+			redirectToActionResult.RouteValues.Should().ContainKey("Id").WhoseValue.Should().Be(expectedRouteValue.Id);
+			redirectToActionResult.RouteValues.Should().ContainKey("FirstName").WhoseValue.Should().Be(expectedRouteValue.FirstName);
+			redirectToActionResult.RouteValues.Should().ContainKey("LastName").WhoseValue.Should().Be(expectedRouteValue.LastName);
+			redirectToActionResult.RouteValues.Should().ContainKey("PhoneNumber").WhoseValue.Should().Be(expectedRouteValue.PhoneNumber);
+			redirectToActionResult.RouteValues.Should().ContainKey("DateOfBirth").WhoseValue.Should().Be(expectedRouteValue.DateOfBirth);
+			redirectToActionResult.RouteValues.Should().ContainKey("Gender").WhoseValue.Should().Be(expectedRouteValue.Gender);
+			redirectToActionResult.RouteValues.Should().ContainKey("BirthPlace").WhoseValue.Should().Be(expectedRouteValue.BirthPlace);
+			redirectToActionResult.RouteValues.Should().ContainKey("IsGraduated").WhoseValue.Should().Be(expectedRouteValue.IsGraduated);
 		}
 
 		[Test]
@@ -163,11 +177,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			var person = new Mock<Person>();
 
 			//Act
-			var result = _controller.ConfirmDelete(person.Object) as ViewResult;
+			var result = _controller.ConfirmDelete(person.Object);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
 		}
 
 		[Test]
@@ -176,13 +189,14 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			//Arrange
 			Person person = null;
 			int id = 1;
+			var expectedMessage = $"No person with id: {id} found";
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person);
 
 			//Act
-			var result = _controller.Edit(id) as ActionResult;
+			var result = _controller.Edit(id);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<NotFoundObjectResult>().Which.Value.Should().Be(expectedMessage);
 
 		}
 
@@ -195,11 +209,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
 
 			//Act
-			var result = _controller.Edit(id) as ViewResult;
+			var result = _controller.Edit(id);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
 		}
 
 		[Test]
@@ -210,11 +223,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.EditPerson(person.Object)).Returns(false);
 
 			//Act
-			var result = _controller.Edit(person.Object) as ViewResult;
+			var result = _controller.Edit(person.Object);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
 		}
 
 		[Test]
@@ -222,13 +234,17 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		{
 			//Arrange
 			var person = new Mock<Person>();
+			var expectedAction = "Index";
 			_mockService.Setup(ser => ser.EditPerson(person.Object)).Returns(true);
 
 			//Act
-			var result = _controller.Edit(person.Object) as ActionResult;
+			var result = _controller.Edit(person.Object);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<RedirectToActionResult>();
+			var redirectToActionResult = result as RedirectToActionResult;
+			redirectToActionResult.Should().NotBeNull();
+			redirectToActionResult!.ActionName.Should().Be(expectedAction);
 		}
 
 		[Test]
@@ -240,11 +256,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			var paginatedPeopleList = PaginatedList<Person>.Create(males.Object.AsQueryable(), 1, males.Object.Count);
 
 			//Act
-			var result = _controller.GetMales() as ViewResult;
+			var result = _controller.GetMales();
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(paginatedPeopleList);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(paginatedPeopleList);
 		}
 
 		[Test]
@@ -255,11 +270,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.GetOldest()).Returns(oldest.Object);
 
 			//Act
-			var result = _controller.GetOldest() as ViewResult;
+			var result = _controller.GetOldest();
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(oldest.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(oldest.Object);
 		}
 
 		[Test]
@@ -271,11 +285,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			var paginatedPeopleList = PaginatedList<Person>.Create(fullnames.Object.AsQueryable(), 1, fullnames.Object.Count);
 
 			//Act
-			var result = _controller.GetMales() as ViewResult;
+			var result = _controller.GetMales();
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(paginatedPeopleList);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(paginatedPeopleList);
 		}
 
 		[Test]
@@ -283,12 +296,16 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		{
 			//Arrange
 			int? input = null;
+			var expectedMessage = "Please input your choice";
 
 			//Act
-			var result = _controller.GetByBirthYear(input) as ActionResult;
+			var result = _controller.GetByBirthYear(input);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<BadRequestObjectResult>();
+			var badRequestResult = result as BadRequestObjectResult;
+			badRequestResult.Should().NotBeNull();
+			badRequestResult!.Value.Should().Be(expectedMessage);
 		}
 
 		[Test]
@@ -300,11 +317,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.GetByBirthYear(input)).Returns(people.Object);
 			var paginatedPeopleList = PaginatedList<Person>.Create(people.Object.AsQueryable(), 1, people.Object.Count);
 			//Act
-			var result = _controller.GetByBirthYear(input) as ViewResult;
+			var result = _controller.GetByBirthYear(input);
 
 			//Assert
-			result.Should().NotBeNull();
-			result.Model.Should().BeEquivalentTo(paginatedPeopleList);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(paginatedPeopleList);
 		}
 
 		[Test]
@@ -315,10 +331,10 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 			_mockService.Setup(ser => ser.ExportToExcel(path)).Returns(true);
 
 			//Act
-			var result = _controller.ExportToExcel(path) as ViewResult;
+			var result = _controller.ExportToExcel(path);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<ViewResult>();
 		}
 
 		[Test]
@@ -326,13 +342,16 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		{
 			//Arrange
 			string? path = null;
+			var expectedMessage = "Can't export to excel";
 			_mockService.Setup(ser => ser.ExportToExcel(path)).Returns(false);
 
 			//Act
-			var result = _controller.ExportToExcel(path) as ActionResult;
+			var result = _controller.ExportToExcel(path);
 
 			//Assert
-			result.Should().NotBeNull();
+			result.Should().BeOfType<ObjectResult>()
+				.Which.Value.Should().BeOfType<ProblemDetails>()
+				.Which.Detail.Should().Be(expectedMessage);
 		}
 
 	}
