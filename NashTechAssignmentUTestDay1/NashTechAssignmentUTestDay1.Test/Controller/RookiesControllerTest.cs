@@ -281,11 +281,11 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		{
 			//Arrange
 			var fullnames = new Mock<List<Person>>();
-			_mockService.Setup(ser => ser.GetMales()).Returns(fullnames.Object);
+			_mockService.Setup(ser => ser.GetPeople()).Returns(fullnames.Object);
 			var paginatedPeopleList = PaginatedList<Person>.Create(fullnames.Object.AsQueryable(), 1, fullnames.Object.Count);
 
 			//Act
-			var result = _controller.GetMales();
+			var result = _controller.GetFullNames();
 
 			//Assert
 			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(paginatedPeopleList);

@@ -267,5 +267,35 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 			result.Should().BeFalse();
 		}
 
+		[Test]
+		public void ExportToExcel_WithPath_ReturnFalse()
+		{
+			//Arrange
+			var exception = new Mock<Exception>();
+			string? path = "D:/";
+			_mockRepository.Setup(repo => repo.GetAll()).Throws(exception.Object);
+
+			//Act
+			var result = _service.ExportToExcel(path);
+
+			//Assert
+			result.Should().BeFalse();
+		}
+
+		[Test]
+		public void ExportToExcel_WithPath_ReturnTrue()
+		{
+			//Arrange
+			var people = new Mock<List<Person>>();
+			string? path = "D:/";
+			_mockRepository.Setup(repo => repo.GetAll()).Returns(people.Object);
+
+			//Act
+			var result = _service.ExportToExcel(path);
+
+			//Assert
+			result.Should().BeTrue();
+		}
+
 	}
 }
