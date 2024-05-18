@@ -5,8 +5,8 @@ namespace NashTechAssignmentDay9.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly MyDbContext _dbContext;
-    public GenericRepository(MyDbContext dbContext)
+    private readonly ApplicationDbContext _dbContext;
+    public GenericRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -30,7 +30,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public IQueryable<T> FindByCondition(Func<T, bool> condition)
     {
-        return _dbContext.Set<T>().Where(condition).AsQueryable();
+        using (var tranaction = _dbContext.Database.BeginTransaction())
+        {
+            var result = _dbContext.Set<T>().Where(condition).AsQueryable();
+			tranaction.Commit();
+            return result;
+        }
     }
 
     public async Task<bool> SaveAsync() => await _dbContext.SaveChangesAsync() > 0;

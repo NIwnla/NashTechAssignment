@@ -10,7 +10,7 @@ using NashTechAssignmentDay9.Infrastructure.Data;
 
 namespace NashTechAssignmentDay9.Web.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class MyDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

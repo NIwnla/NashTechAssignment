@@ -3,9 +3,9 @@ using NashTechAssignmentDay9.Domain.Entities;
 
 namespace NashTechAssignmentDay9.Infrastructure.Data;
 
-public class MyDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -31,9 +31,5 @@ public class MyDbContext : DbContext
                         .WithMany(employee => employee.Projects)
                         .UsingEntity<ProjectEmployee>();
                 modelBuilder.Entity<ProjectEmployee>().HasKey(pe => new { pe.EmployeeId, pe.ProjectId });
-                //     "ProjectEmployee",
-                //     e => e.HasOne(typeof(Employee)).WithMany().HasForeignKey("EmployeeId").HasPrincipalKey(nameof(Employee.Id)),
-                //     p => p.HasOne(typeof(Project)).WithMany().HasForeignKey("ProjectId").HasPrincipalKey(nameof(Project.Id)),
-                //     t => t.HasKey("EmployeeId", "ProjectId"));
         }
 }

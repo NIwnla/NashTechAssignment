@@ -13,7 +13,7 @@ public static class ApplicationDbExtension
     {
         using (var scope = app.ApplicationServices.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetService<MyDbContext>();
+            var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
             dbContext.Database.EnsureCreated();
             if (!dbContext.Departments.Any())
             {

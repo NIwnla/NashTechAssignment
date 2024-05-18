@@ -12,7 +12,7 @@ public interface IEmployeeService
     Task<bool> UpdateAsync(Guid id, EmployeeDto employee);
     Task<bool> DeleteAsync(Guid id);
 
-    IEnumerable<Employee> SpecialQuery1();
-    IEnumerable<Employee> SpecialQuery2();
-    IEnumerable<Employee> SpecialQuery3();
+    IEnumerable<Employee> GetAllWithProjects();
+    IEnumerable<Employee> GetAllWithDepartment();
+    IEnumerable<Employee> GetAllWithSalary();
 }

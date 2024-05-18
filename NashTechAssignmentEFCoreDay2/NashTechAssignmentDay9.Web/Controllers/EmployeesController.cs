@@ -87,21 +87,21 @@ public class EmployeesController : ControllerBase
         }
     }
 
-    [HttpGet("specialQuery1")]
+    [HttpGet("Departments")]
     public IActionResult SpecialQuery1(){
-        var result = _employeeService.SpecialQuery1();
+        var result = _employeeService.GetAllWithDepartment();
         return Ok(result);
     }
-    [HttpGet("specialQuery2")]
+    [HttpGet("Projects")]
     public IActionResult SpecialQuery2()
     {
-        var result = _employeeService.SpecialQuery2();
+        var result = _employeeService.GetAllWithProjects();
         return Ok(result);
     }
-    [HttpGet("specialQuery3")]
+    [HttpGet("Salaries")]
     public IActionResult SpecialQuery3()
     {
-        var result = _employeeService.SpecialQuery3();
+        var result = _employeeService.GetAllWithSalary();
         return Ok(result);
     }
 }

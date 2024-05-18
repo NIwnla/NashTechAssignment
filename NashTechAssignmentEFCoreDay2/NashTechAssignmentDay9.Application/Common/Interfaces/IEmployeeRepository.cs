@@ -7,5 +7,5 @@ public interface IEmployeeRepository : IGenericRepository<Employee>
     IQueryable<Employee> FindAllWithDepartment();
     IQueryable<Employee> FindByConditionWithDepartment(Func<Employee,bool> condition);
     IQueryable<Employee> FindAllWithProject();
-    IQueryable<Employee> FindAllWithSalaryMore100AndJoinedDateMore20240101();
+    IQueryable<Employee> FindAllWithSalary();
 }

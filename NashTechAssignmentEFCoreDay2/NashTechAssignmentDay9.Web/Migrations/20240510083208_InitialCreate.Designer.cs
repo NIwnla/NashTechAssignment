@@ -11,7 +11,7 @@ using NashTechAssignmentDay9.Infrastructure.Data;
 
 namespace NashTechAssignmentDay9.Web.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240510083208_InitialCreate")]
     partial class InitialCreate
     {
