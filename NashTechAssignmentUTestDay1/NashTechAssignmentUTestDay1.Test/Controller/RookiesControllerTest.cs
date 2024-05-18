@@ -3,11 +3,8 @@ using Moq;
 using NashTechAssignmentDay5.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using NashTechAssignmentDay5.Areas.NashTech.Controllers;
-using NashTechAssignmentDay5.Domain.Entities;
-using DocumentFormat.OpenXml.Office2013.Word;
 using Person = NashTechAssignmentDay5.Domain.Entities.Person;
 using NashTechAssignmentDay5.Application.Helper;
-using Microsoft.AspNetCore.Routing;
 
 namespace NashTechAssignmentUTestDay1.Test.Controller
 {
@@ -16,12 +13,21 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 	{
 		private Mock<IRookiesService> _mockService;
 		private RookiesController _controller;
+		private Mock<Person> _personMock;
+		private Mock<List<Person>> _peopleListMock;
 
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
 			_mockService = new Mock<IRookiesService>(MockBehavior.Strict);
 			_controller = new RookiesController(_mockService.Object);
+		}
+
+		[SetUp]
+		public void SetUp()
+		{
+			_personMock = new Mock<Person>();
+			_peopleListMock = new Mock<List<Person>>();
 		}
 
 		public void Dispose()
@@ -34,11 +40,11 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Index_ReturnView()
 		{
 			//Arrange
+			//Mock paginatedList view for Index() to return
 			int? pageNumber = 1;
 			int? pageSize = 3;
-			var peopleList = new Mock<List<Person>>();
-			_mockService.Setup(ser => ser.GetPeople()).Returns(peopleList.Object);
-			var paginatedPeopleList = PaginatedList<Person>.Create(peopleList.Object.AsQueryable(), pageNumber ?? 1, pageSize.Value);
+			_mockService.Setup(ser => ser.GetPeople()).Returns(_peopleListMock.Object);
+			var paginatedPeopleList = PaginatedList<Person>.Create(_peopleListMock.Object.AsQueryable(), pageNumber ?? 1, pageSize.Value);
 
 			//Act
 			var result = _controller.Index(pageNumber, pageSize) as ViewResult;
@@ -52,6 +58,7 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Details_WithId_ReturnNotFound()
 		{
 			//Arrange
+			//Method Details(int id) will return NotFound result if service fail to find a record with correspond Id
 			Person person = null;
 			int id = 1;
 			var expectedMessage = $"No person with id: {id} found";
@@ -68,21 +75,22 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Details_WithId_ReturnView()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			int id = person.Object.Id;
-			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
+			//This method will return View with record of correspond Id if service can find that record
+			int id = _personMock.Object.Id;
+			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(_personMock.Object);
 
 			//Act
 			var result = _controller.Details(id);
 
 			//Assert
-			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(_personMock.Object);
 		}
 
 		[Test]
 		public void Create_ReturnView()
 		{
 			//Arrange
+			//There is no input for this method
 
 			//Act
 			var result = _controller.Create();
@@ -95,25 +103,25 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Create_WithValidPerson_ReturnView()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			_mockService.Setup(ser => ser.AddPerson(person.Object)).Returns(false);
+			//When service failed to create, put back to view with record is currently being created
+			_mockService.Setup(ser => ser.AddPerson(_personMock.Object)).Returns(false);
 
 			//Act
-			var result = _controller.Create(person.Object);
+			var result = _controller.Create(_personMock.Object);
 
 			//Assert
-			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().BeEquivalentTo(_personMock.Object);
 		}
 
 		[Test]
 		public void Create_WithValidPerson_ReturnRedirectToAction()
 		{
 			////Arrange
-			var person = new Mock<Person>();
-			_mockService.Setup(ser => ser.AddPerson(person.Object)).Returns(true);
+			//If service create record successfully, redirect to "Index" action
+			_mockService.Setup(ser => ser.AddPerson(_personMock.Object)).Returns(true);
 			var expectedAction = "Index";
 			//Act
-			var result = _controller.Create(person.Object);
+			var result = _controller.Create(_personMock.Object);
 
 			//Assert
 			result.Should().BeOfType<RedirectToActionResult>();
@@ -126,9 +134,9 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Delete_WithId_ReturnProblem()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			int id = person.Object.Id;
-			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
+			//If service failed to delete, return ProblemDetails
+			int id = _personMock.Object.Id;
+			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(_personMock.Object);
 			_mockService.Setup(ser => ser.DeletePerson(id)).Returns(false);
 			var expectedMessage = "Problem with deleting person";
 
@@ -145,11 +153,11 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Delete_WithId_ReturnRedirectToAction()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			int id = person.Object.Id;
+			//If service successfully delete record, redirect to ConfirmDelete option with deleted record as route value
+			int id = _personMock.Object.Id;
 			var expectedAction = "ConfirmDelete";
-			var expectedRouteValue = person.Object;
-			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
+			var expectedRouteValue = _personMock.Object;
+			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(_personMock.Object);
 			_mockService.Setup(ser => ser.DeletePerson(id)).Returns(true);
 
 			//Act
@@ -174,19 +182,20 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void ConfirmDelete_ReturnView()
 		{
 			//Arrange
-			var person = new Mock<Person>();
+			//This method don't need input
 
 			//Act
-			var result = _controller.ConfirmDelete(person.Object);
+			var result = _controller.ConfirmDelete(_personMock.Object);
 
 			//Assert
-			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(_personMock.Object);
 		}
 
 		[Test]
 		public void Edit_WithId_ReturnNotFound()
 		{
 			//Arrange
+			// If service cant find record with corresponding Id, reuturn NotFound
 			Person person = null;
 			int id = 1;
 			var expectedMessage = $"No person with id: {id} found";
@@ -204,41 +213,41 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		public void Edit_WithId_ReturnView()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			int id = person.Object.Id;
-			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(person.Object);
+			//If service found the record with input Id, return view with that record
+			int id = _personMock.Object.Id;
+			_mockService.Setup(ser => ser.GetPersonById(id)).Returns(_personMock.Object);
 
 			//Act
 			var result = _controller.Edit(id);
 
 			//Assert
-			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(_personMock.Object);
 		}
 
 		[Test]
 		public void Edit_WithValidPerson_ReturnView()
 		{
 			//Arrange
-			var person = new Mock<Person>();
-			_mockService.Setup(ser => ser.EditPerson(person.Object)).Returns(false);
+			//If service failed to edit record, return back to view with current editted record
+			_mockService.Setup(ser => ser.EditPerson(_personMock.Object)).Returns(false);
 
 			//Act
-			var result = _controller.Edit(person.Object);
+			var result = _controller.Edit(_personMock.Object);
 
 			//Assert
-			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(person.Object);
+			result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(_personMock.Object);
 		}
 
 		[Test]
 		public void Edit_WithValidPerson_ReturnRedirectToAction()
 		{
 			//Arrange
-			var person = new Mock<Person>();
+			// If service successfully edit record, redirect to index action
 			var expectedAction = "Index";
-			_mockService.Setup(ser => ser.EditPerson(person.Object)).Returns(true);
+			_mockService.Setup(ser => ser.EditPerson(_personMock.Object)).Returns(true);
 
 			//Act
-			var result = _controller.Edit(person.Object);
+			var result = _controller.Edit(_personMock.Object);
 
 			//Assert
 			result.Should().BeOfType<RedirectToActionResult>();
@@ -313,9 +322,8 @@ namespace NashTechAssignmentUTestDay1.Test.Controller
 		{
 			//Arrange
 			int input = 1;
-			var people = new Mock<List<Person>>();
-			_mockService.Setup(ser => ser.GetByBirthYear(input)).Returns(people.Object);
-			var paginatedPeopleList = PaginatedList<Person>.Create(people.Object.AsQueryable(), 1, people.Object.Count);
+			_mockService.Setup(ser => ser.GetByBirthYear(input)).Returns(_peopleListMock.Object);
+			var paginatedPeopleList = PaginatedList<Person>.Create(_peopleListMock.Object.AsQueryable(), 1, _peopleListMock.Object.Count);
 			//Act
 			var result = _controller.GetByBirthYear(input);
 

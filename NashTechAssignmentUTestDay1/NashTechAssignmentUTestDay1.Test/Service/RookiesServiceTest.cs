@@ -12,6 +12,8 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 	{
 		private IRookiesService _service;
 		private	Mock<IPersonRepository> _mockRepository;
+		private Mock<Person> _personMock;
+		private Mock<List<Person>> _peopleListMock;
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
@@ -19,60 +21,50 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 			_service = new RookiesService(_mockRepository.Object);
 		}
 
-		//[Test]
-		//public void Mock()
-		//{
-		//	//Arrange
-
-		//	//Act
-
-		//	//Assert
-		//}
+		[SetUp]
+		public void Setup()
+		{
+			_personMock = new Mock<Person>();
+			_peopleListMock = new Mock<List<Person>>();
+		}
 
 		[Test]
 		public void GetPeople_With3People_ReturnListOf3()
 		{
 			//Arrange
-			var people = new List<Person>
-			{
-				new Mock<Person>().Object,
-				new Mock<Person>().Object,
-				new Mock<Person>().Object
-			};
 			_mockRepository.Setup(repo => repo.GetAll())
-				.Returns(people);
+				.Returns(_peopleListMock.Object);
 			//Act
 			var result = _service.GetPeople();
 
 			//Assert
-			result.Should().BeEquivalentTo(people);
+			result.Should().BeEquivalentTo(_peopleListMock.Object);
 		}
 
 		[Test]
 		public void GetPersonById_WithAPerson_ReturnAPerson()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.FindById(person.Id))
-				.Returns(person);
+			_mockRepository.Setup(repo => repo.FindById(_personMock.Object.Id))
+				.Returns(_personMock.Object);
 
 			//Act
-			var result = _service.GetPersonById(person.Id);
+			var result = _service.GetPersonById(_personMock.Object.Id);
 
 			//Assert
-			result.Should().BeEquivalentTo(person);
+			result.Should().BeEquivalentTo(_personMock.Object);
 		}
 
 		[Test]
 		public void EditPerson_WithAPerson_ReturnTrue()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.Update(person))
+			
+			_mockRepository.Setup(repo => repo.Update(_personMock.Object))
 				.Returns(true);
 
 			//Act
-			var result = _service.EditPerson(person);
+			var result = _service.EditPerson(_personMock.Object);
 
 			//Assert
 			result.Should().BeTrue();
@@ -82,12 +74,12 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void EditPerson_WithAPerson_ReturnFalse()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.Update(person))
+			
+			_mockRepository.Setup(repo => repo.Update(_personMock.Object))
 				.Returns(false);
 
 			//Act
-			var result = _service.EditPerson(person);
+			var result = _service.EditPerson(_personMock.Object);
 
 			//Assert
 			result.Should().BeFalse();
@@ -97,10 +89,10 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void DeletePerson_WithAPerson_ReturnTrue()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			var id = person.Id;
-			_mockRepository.Setup(repo => repo.FindById(id)).Returns(person);
-			_mockRepository.Setup(repo => repo.Delete(person)).Returns(true);
+			
+			var id = _personMock.Object.Id;
+			_mockRepository.Setup(repo => repo.FindById(id)).Returns(_personMock.Object);
+			_mockRepository.Setup(repo => repo.Delete(_personMock.Object)).Returns(true);
 
 			//Act
 			var result = _service.DeletePerson(id);
@@ -113,7 +105,7 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void DeletePerson_WithAPerson_ReturnFalse()
 		{
 			//Arrange
-			Person person = null;
+			Person? person = null;
 			var id = 1;
 			_mockRepository.Setup(repo => repo.FindById(id)).Returns(person);
 			_mockRepository.Setup(repo => repo.Delete(person)).Returns(false);
@@ -129,12 +121,12 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void AddPerson_WithAPerson_ReturnTrue()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.Create(person))
+			
+			_mockRepository.Setup(repo => repo.Create(_personMock.Object))
 				.Returns(true);
 
 			//Act
-			var result = _service.AddPerson(person);
+			var result = _service.AddPerson(_personMock.Object);
 
 			//Assert
 			result.Should().BeTrue();
@@ -144,12 +136,12 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void AddPerson_WithAPerson_ReturnFalse()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.Create(person))
+			
+			_mockRepository.Setup(repo => repo.Create(_personMock.Object))
 				.Returns(false);
 
 			//Act
-			var result = _service.AddPerson(person);
+			var result = _service.AddPerson(_personMock.Object);
 
 			//Assert
 			result.Should().BeFalse();
@@ -159,34 +151,28 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void GetMales_ReturnMales()
 		{
 			//Arrange
-			var people = new List<Person>
-			{
-				new Mock<Person>().Object,
-				new Mock<Person>().Object,
-				new Mock<Person>().Object
-			};
 			_mockRepository.Setup(repo => repo.GetMales())
-				.Returns(people);
+				.Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.GetMales();
 
 			//Assert
-			result.Should().BeEquivalentTo(people);
+			result.Should().BeEquivalentTo(_peopleListMock.Object);
 		}
 
 		[Test]
 		public void GetOldest_ReturnPerson()
 		{
 			//Arrange
-			var person = new Mock<Person>().Object;
-			_mockRepository.Setup(repo => repo.GetOldest()).Returns(person);
+			
+			_mockRepository.Setup(repo => repo.GetOldest()).Returns(_personMock.Object);
 
 			//Act
 			var result = _service.GetOldest();
 
 			//Assert
-			result.Should().BeEquivalentTo(person);
+			result.Should().BeEquivalentTo(_personMock.Object);
 		}
 
 		[Test]
@@ -194,15 +180,14 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		{
 			//Arrange
 			var input = 1;
-			var people = new Mock<List<Person>>();
 			_mockRepository.Setup(repo => repo.FindByBirthYear(input))
-				.Returns(people.Object);
+				.Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.GetByBirthYear(input);
 
 			//Assert
-			result.Should().BeEquivalentTo(people.Object);
+			result.Should().BeEquivalentTo(_peopleListMock.Object);
 		}
 
 		[Test]
@@ -210,15 +195,14 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		{
 			//Arrange
 			var input = 2;
-			var people = new Mock<List<Person>>();
 			_mockRepository.Setup(repo => repo.FindByBirthYear(input))
-				.Returns(people.Object);
+				.Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.GetByBirthYear(input);
 
 			//Assert
-			result.Should().BeEquivalentTo(people.Object);
+			result.Should().BeEquivalentTo(_peopleListMock.Object);
 		}
 
 		[Test]
@@ -226,24 +210,22 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		{
 			//Arrange
 			var input = 3;
-			var people = new Mock<List<Person>>();
 			_mockRepository.Setup(repo => repo.FindByBirthYear(input))
-				.Returns(people.Object);
+				.Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.GetByBirthYear(input);
 
 			//Assert
-			result.Should().BeEquivalentTo(people.Object);
+			result.Should().BeEquivalentTo(_peopleListMock.Object);
 		}
 
 		[Test]
 		public void ExportToExcel_ReturnTrue()
 		{
 			//Arrange
-			var people = new Mock<List<Person>>();
 			string? path = null;
-			_mockRepository.Setup(repo => repo.GetAll()).Returns(people.Object);
+			_mockRepository.Setup(repo => repo.GetAll()).Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.ExportToExcel(path);
@@ -286,9 +268,8 @@ namespace NashTechAssignmentUTestDay1.Test.Services
 		public void ExportToExcel_WithPath_ReturnTrue()
 		{
 			//Arrange
-			var people = new Mock<List<Person>>();
 			string? path = "D:/";
-			_mockRepository.Setup(repo => repo.GetAll()).Returns(people.Object);
+			_mockRepository.Setup(repo => repo.GetAll()).Returns(_peopleListMock.Object);
 
 			//Act
 			var result = _service.ExportToExcel(path);
